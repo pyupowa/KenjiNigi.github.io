@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kenji Kuwabara | Portfolio</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;700&display=swap');
+
+        :root {
+            --crimson: #9e1a1a;
+            --ink: #1a1a1a;
+            --paper: #f5f4f0;
+            --gold: #c2a55a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--paper);
+            color: var(--ink);
+            line-height: 1.6;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Language Toggle Logic */
+        body.lang-ja .en { display: none !important; }
+        body.lang-en .ja { display: none !important; }
+
+        h1, h2, h3, .serif { font-family: 'Noto Serif JP', serif; }
+
+        header {
+            background-color: var(--crimson);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath fill='%23ffffff' fill-opacity='0.1' d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100L0 84L0 50L28 66ZM28 34L0 18L0 52L28 68L56 52L56 18L28 34Z'/%3E%3C/svg%3E");
+            color: white;
+            padding: 60px 20px 40px;
+            text-align: center;
+            border-bottom: 5px solid var(--gold);
+            position: relative;
+        }
+
+        .lang-switch-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+
+        .lang-label {
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+            opacity: 0.9;
+        }
+
+        .lang-switch {
+            background: rgba(0,0,0,0.3);
+            border: 1px solid var(--gold);
+            border-radius: 20px;
+            overflow: hidden;
+            display: flex;
+        }
+
+        .lang-btn {
+            background: transparent;
+            color: white;
+            border: none;
+            padding: 6px 14px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .lang-btn.active { background: var(--gold); color: var(--ink); }
+
+        header h1 { font-size: 2.5rem; letter-spacing: 0.1em; margin-bottom: 10px; }
+        header p { font-size: 1.1rem; opacity: 0.9; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.8rem;
+            color: var(--crimson);
+            margin-bottom: 30px;
+            position: relative;
+        }
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50px;
+            height: 2px;
+            background-color: var(--ink);
+            margin: 10px auto 0;
+        }
+
+        .mission-box {
+            background: white;
+            padding: 30px;
+            border-left: 4px solid var(--crimson);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            margin-bottom: 40px;
+        }
+
+        /* Timeline CSS */
+        .timeline {
+            position: relative;
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--gold);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+            opacity: 0.5;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            right: -8px;
+            background-color: var(--paper);
+            border: 4px solid var(--crimson);
+            top: 25px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .left { left: 0; }
+        .right { left: 50%; }
+        .right::after { left: -8px; }
+
+        .timeline-content {
+            padding: 20px;
+            background-color: white;
+            position: relative;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border-top: 3px solid var(--ink);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            border-top-color: var(--crimson);
+        }
+
+        .timeline-content h3 { font-size: 1.15rem; margin-bottom: 5px; }
+        
+        .timeline-date {
+            font-size: 0.85rem;
+            color: var(--crimson);
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .timeline::after { left: 31px; }
+            .timeline-item { width: 100%; padding-left: 70px; padding-right: 0; }
+            .timeline-item::after { left: 23px; }
+            .right { left: 0%; }
+        }
+
+        /* Minigame CSS */
+        .game-container {
+            background-color: var(--ink);
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='100' viewBox='0 0 56 100'%3E%3Cpath fill='%23c2a55a' fill-opacity='0.03' d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100L0 84L0 50L28 66ZM28 34L0 18L0 52L28 68L56 52L56 18L28 34Z'/%3E%3C/svg%3E");
+            color: var(--paper);
+            border: 2px solid var(--gold);
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+        }
+        
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+        
+        .stat { display: flex; align-items: center; gap: 8px; }
+        .stat-val { color: var(--gold); font-size: 1.1rem;}
+
+        .game-text {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            min-height: 80px;
+            line-height: 1.7;
+        }
+
+        .game-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .game-btn {
+            background: #2a2a2a;
+            color: white;
+            border: 1px solid #444;
+            padding: 12px 15px;
+            text-align: left;
+            cursor: pointer;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 0.95rem;
+        }
+
+        .game-btn:hover {
+            background: var(--crimson);
+            border-color: var(--crimson);
+            transform: translateX(5px);
+        }
+
+        /* New Sections CSS (Map & Manifesto) */
+        .map-container { 
+            position: relative; 
+            width: 100%; 
+            height: 450px; 
+            background-color: #f4f1ea; 
+            border: 3px solid var(--ink); 
+            border-radius: 4px; 
+            margin-bottom: 40px; 
+            overflow: hidden; 
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.05);
+        }
+
+        /* Stylized CSS Map Shapes */
+        .map-shape { position: absolute; opacity: 0.9; }
+        .shape-castle { top: 25%; left: 10%; width: 38%; height: 35%; background: #a2c6a2; border-radius: 40% 60% 55% 45%; border: 2px solid #8fb58f; }
+        .shape-kenrokuen { top: 10%; right: 10%; width: 35%; height: 30%; background: #92b892; border-radius: 50% 30% 60% 40%; border: 2px solid #7c9c7c; }
+        .shape-oyama { bottom: 15%; left: 15%; width: 18%; height: 22%; background: #a2c6a2; border-radius: 20%; border: 2px solid #8fb58f; }
+        .shape-civic { bottom: 15%; right: 20%; width: 28%; height: 28%; background: #dcdcdc; border-radius: 50%; border: 2px solid #c0c0c0; }
+        
+        .shape-road { position: absolute; background: #ffffff; opacity: 0.8; }
+        .road-1 { top: 48%; left: -10%; width: 120%; height: 16px; transform: rotate(-8deg); }
+        .road-2 { top: -10%; left: 52%; width: 16px; height: 120%; transform: rotate(15deg); }
+        .road-3 { top: 45%; right: 28%; width: 16px; height: 60%; transform: rotate(-25deg); }
+
+        /* Clickable Markers */
+        .map-marker {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s ease;
+        }
+        .map-marker:hover { transform: scale(1.15) translateY(-5px); }
+        
+        .marker-icon {
+            width: 34px; height: 34px;
+            background: var(--crimson);
+            color: white;
+            border-radius: 50% 50% 50% 0;
+            transform: rotate(-45deg);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 2px 4px 8px rgba(0,0,0,0.3);
+            border: 2px solid white;
+        }
+        .marker-icon span { transform: rotate(45deg); font-size: 16px; }
+        
+        .marker-label {
+            margin-top: 8px;
+            background: rgba(255,255,255,0.95);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            border: 2px solid var(--ink);
+            white-space: nowrap;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .marker-castle { top: 35%; left: 23%; }
+        .marker-kenrokuen { top: 20%; right: 22%; }
+        .marker-oyama { bottom: 20%; left: 19%; }
+        .marker-civic { bottom: 23%; right: 29%; }
+
+        /* Modal / Popup CSS */
+        .modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: none; /* Hidden by default */
+            align-items: center; justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active { display: flex; opacity: 1; }
+        
+        .modal-content {
+            background: var(--paper);
+            width: 90%; max-width: 500px;
+            padding: 30px;
+            border-radius: 8px;
+            border-top: 5px solid var(--crimson);
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transform: translateY(20px);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        
+        .close-btn {
+            position: absolute; top: 15px; right: 15px;
+            background: none; border: none; font-size: 1.5rem;
+            cursor: pointer; color: var(--ink);
+            font-weight: bold;
+        }
+        .close-btn:hover { color: var(--crimson); }
+
+        @media (max-width: 600px) { header h1 { font-size: 2rem; } }
+    </style>
+</head>
+<body class="lang-ja">
+
+    <header>
+        <div class="lang-switch-container">
+            <span class="lang-label">翻訳 / Translate:</span>
+            <div class="lang-switch">
+                <button class="lang-btn active" id="btn-ja" onclick="setLang('ja')">JA</button>
+                <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+            </div>
+        </div>
+        <h1 class="serif ja">桑原 健司</h1>
+        <h1 class="serif en">Kenji Kuwabara</h1>
+        <p class="ja">郷土の伝統を護り、法と政策で未来を統べる</p>
+        <p class="en">Protecting Local Heritage, Governing the Future through Law & Policy</p>
+    </header>
+
+    <div class="container">
+        
+        <section>
+            <h2 class="section-title ja">理念とビジョン</h2>
+            <h2 class="section-title en">Mission & Vision</h2>
+            <div class="mission-box">
+                <p class="ja"><strong>金沢大学 融合学域 心理学類在籍（法学類へ転籍予定）</strong></p>
+                <p class="en"><strong>Kanazawa University – Humanities Psychology (Transitioning to Law)</strong></p>
+                <br>
+                <p class="ja">浅野川小、紫錦台中、金沢泉丘高と、愛する地元・金沢で育ちました。現在、社会心理学を通じて地域社会の動態を学んでいますが、私の最終的な使命は「法規制と都市計画の策定」にあります。</p>
+                <p class="ja">無秩序な近代化と産業化の波から、金沢が誇る歴史的景観と伝統文化を厳格に保護するため、公共政策と法学の道へ進みます。強い郷土愛と国家への誇りを胸に、地域創生と伝統保守の両立を実現します。</p>
+                
+                <p class="en">Born and raised in Kanazawa, progressing through Asanogawa-cho, Shikinadai, and Izumigaoka. Currently studying Social Psychology to understand community dynamics, my ultimate mission lies in drafting public policy and urban regulation.</p>
+                <p class="en">To protect Kanazawa's historic landscape and cultural heritage from the wave of unchecked modernization, I am pursuing law and public administration. Driven by patriotism and a deep love for my hometown, I aim to harmonize economic revitalization with strict heritage conservation.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title ja">軌跡と実績</h2>
+            <h2 class="section-title en">Timeline & Achievements</h2>
+            <div class="timeline">
+                
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3 class="serif ja">国民民主党 学生部での政策提言</h3>
+                        <h3 class="serif en">DPFP Youth Policy Pitching</h3>
+                        <div class="timeline-date ja">2025年（高校在学中） - 現在</div>
+                        <div class="timeline-date en">2025 (High School) - Present</div>
+                        <p class="ja">高校在学中から国民民主党の学生部・青年局に参画し、大学進学後も継続して最前線で活動。「アクティブ石川」キャンペーンを共同運営し、歴史的地区の保護のため厳格なゾーニング案を提案しました。</p>
+                        <p class="en">Joined the DPFP Youth Division while in high school and continues active involvement in university. Co-organized the "Active Ishikawa" campaign and pitched a strict zoning framework to protect historic districts.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3 class="serif ja">生徒会予算配分改革</h3>
+                        <h3 class="serif en">Budget Allocation Reform</h3>
+                        <div class="timeline-date ja">2024年</div>
+                        <div class="timeline-date en">2024</div>
+                        <p class="ja">生徒会長として、不透明なクラス内集金（集幣）を全面廃止。透明性の高い生徒会助成金システムを標準化し、学校の財務コンプライアンスを確立しました。</p>
+                        <p class="en">As Student Council President, eliminated unauthorized class-level fee collections. Standardized a transparent grant system, ensuring financial compliance.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3 class="serif ja">学校改善企画コンペの創設</h3>
+                        <h3 class="serif en">School Improvement Pitch Competition</h3>
+                        <div class="timeline-date ja">2024年</div>
+                        <div class="timeline-date en">2024</div>
+                        <p class="ja">生徒会余剰金を活用し、各クラスが学校生活向上のための企画を立案・プレゼンする民主的再配分システムを総会に導入しました。</p>
+                        <p class="en">Designed a democratic framework allowing homerooms to pitch ideas and reallocate surplus council funds directly toward student-driven initiatives.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item right">
+                    <div class="timeline-content">
+                        <h3 class="serif ja">クラス対抗リーグの導入</h3>
+                        <h3 class="serif en">Inter-Class Dual-Track League</h3>
+                        <div class="timeline-date ja">2023年</div>
+                        <div class="timeline-date en">2023</div>
+                        <p class="ja">運動部門（バスケ等）と頭脳部門（チェス、将棋等）を平等に評価するシーズン制大会を構築。授業を圧迫しない持続可能なスケジュールを確立しました。</p>
+                        <p class="en">Established a sustainable season-long tournament balancing an Athletic Division and a Mind Sports Division without compromising instructional hours.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item left">
+                    <div class="timeline-content">
+                        <h3 class="serif ja">競技ディベートでの実績</h3>
+                        <h3 class="serif en">Competitive Debate & MUN</h3>
+                        <div class="timeline-date ja">2022年 - 現在</div>
+                        <div class="timeline-date en">2022 - Present</div>
+                        <p class="ja">現在も現役でディベート活動を継続。アジア型（AP）、英国型（BP）、模擬国連（UN）、即興型（PDA）、アカデミック（JDA）など多様なフォーマットに精通し、高度な政策分析と圧倒的な交渉力を発揮しています。</p>
+                        <p class="en">Continues to compete actively today. Highly experienced in multiple systems including Asian Parliamentary (AP), British Parliamentary (BP), Model UN, PDA, and JDA, deploying advanced policy analysis and negotiation skills.</p>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title ja">政策提言と論文構想</h2>
+            <h2 class="section-title en">Policy Manifesto & Thesis Concept</h2>
+            <div class="mission-box" style="border-left-color: var(--ink);">
+                <h3 class="serif ja">「行動心理学を用いた都市計画コンプライアンスの設計」</h3>
+                <h3 class="serif en">"Designing Urban Compliance via Behavioral Psychology"</h3>
+                <br>
+                <p class="ja">心理学類から法学類への転籍に伴い、私は「人間の行動原理を組み込んだ法制度設計」を研究テーマとして掲げています。単なる罰則や規制の強化ではなく、行動経済学や社会心理学の知見（ナッジ理論など）を活用し、市民や開発業者が自発的に伝統景観の保全に協力したくなるような都市コンプライアンスモデルを構築します。</p>
+                <p class="en">Transitioning from Psychology to Law, my core research focuses on "Legal Frameworks Integrated with Human Behavioral Principles." Rather than relying solely on strict penalties, I plan to leverage insights from behavioral economics and social psychology (such as Nudge theory) to design an urban compliance model where citizens and developers naturally cooperate in preserving historical landscapes.</p>
+            </div>
+        </section>
+
+        <section>
+            <h2 class="section-title ja">金沢ゾーニング防衛構想（インタラクティブ・マップ）</h2>
+            <h2 class="section-title en">Kanazawa Zoning Defense Map</h2>
+            <p class="ja" style="text-align: center; margin-bottom: 20px;">※マップ上のマーカーをクリックすると、該当エリアの政策案が表示されます。</p>
+            <p class="en" style="text-align: center; margin-bottom: 20px;">* Click on the map markers to view the proposed zoning policies for each area.</p>
+            
+            <div class="map-container">
+                <!-- Abstract CSS Roads -->
+                <div class="shape-road road-1"></div>
+                <div class="shape-road road-2"></div>
+                <div class="shape-road road-3"></div>
+
+                <!-- Abstract CSS Parks & Civic Areas -->
+                <div class="map-shape shape-castle"></div>
+                <div class="map-shape shape-kenrokuen"></div>
+                <div class="map-shape shape-oyama"></div>
+                <div class="map-shape shape-civic"></div>
+
+                <!-- Clickable Pins -->
+                <div class="map-marker marker-castle" onclick="openMapModal('castle')">
+                    <div class="marker-icon"><span>🏯</span></div>
+                    <div class="marker-label"><span class="ja">金沢城公園</span><span class="en">Castle Park</span></div>
+                </div>
+
+                <div class="map-marker marker-kenrokuen" onclick="openMapModal('kenrokuen')">
+                    <div class="marker-icon"><span>🌲</span></div>
+                    <div class="marker-label"><span class="ja">兼六園</span><span class="en">Kenrokuen</span></div>
+                </div>
+
+                <div class="map-marker marker-oyama" onclick="openMapModal('oyama')">
+                    <div class="marker-icon"><span>⛩️</span></div>
+                    <div class="marker-label"><span class="ja">尾山神社</span><span class="en">Oyama Jinja</span></div>
+                </div>
+
+                <div class="map-marker marker-civic" onclick="openMapModal('civic')">
+                    <div class="marker-icon"><span>🏛️</span></div>
+                    <div class="marker-label"><span class="ja">21世紀美術館/市役所</span><span class="en">Civic Area</span></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Zoning Policy Modal -->
+        <div id="zoning-modal" class="modal-overlay" onclick="closeMapModal(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <button class="close-btn" onclick="forceCloseMapModal()">×</button>
+                <div id="modal-body">
+                    <!-- Dynamic content injected here -->
+                </div>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title ja">政策シミュレーション</h2>
+            <h2 class="section-title en">Policy Simulation</h2>
+            <p class="ja" style="margin-bottom: 15px; text-align: center;">ミニゲーム『金沢市長の決断』：全5ターンの本格政治シミュレーション。伝統文化、経済、支持率を管理し、街の未来を決定してください。</p>
+            <p class="en" style="margin-bottom: 15px; text-align: center;">Minigame "The Mayor of Kanazawa": A 5-turn political simulation. Manage Culture, Economy, and Approval to determine the city's future.</p>
+            
+            <div class="game-container">
+                <div class="game-stats">
+                    <div class="stat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 10v11M20 10v11M2 10h20M6 21v-1M18 21v-1M12 21v-4M4 5h16M12 5v5M10 5L8 2M14 5l2-3"/></svg>
+                        <span class="ja">文化</span><span class="en">Culture</span>: <span class="stat-val" id="stat-c">50</span>
+                    </div>
+                    <div class="stat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="9" x2="12" y2="21"></line><path d="M17 5L12 9L7 5"></path><line x1="6" y1="13" x2="18" y2="13"></line><line x1="6" y1="17" x2="18" y2="17"></line></svg>
+                        <span class="ja">経済</span><span class="en">Economy</span>: <span class="stat-val" id="stat-e">50</span>
+                    </div>
+                    <div class="stat">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--gold)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                        <span class="ja">支持率</span><span class="en">Approval</span>: <span class="stat-val" id="stat-a">50</span>
+                    </div>
+                </div>
+                <div class="game-text" id="game-text">
+                    <!-- Narrative text injects here -->
+                </div>
+                <div class="game-choices" id="game-choices">
+                    <!-- Choices inject here -->
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <script>
+        let currentLang = 'ja';
+
+        function setLang(lang) {
+            currentLang = lang;
+            document.body.className = `lang-${lang}`;
+            
+            document.getElementById('btn-ja').classList.remove('active');
+            document.getElementById('btn-en').classList.remove('active');
+            document.getElementById(`btn-${lang}`).classList.add('active');
+            
+            if(typeof renderGameNode === "function") renderGameNode();
+        }
+
+        // Carousel Logic
+        let currentSlide = 0;
+        function moveSlide(dir) {
+            const track = document.getElementById('carousel-track');
+            const slides = track.children.length;
+            currentSlide = (currentSlide + dir + slides) % slides;
+            track.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        // Map Modal Logic
+        const zoningData = {
+            castle: `
+                <h3 class="serif ja">金沢城公園 周辺特区</h3>
+                <h3 class="serif en">Kanazawa Castle Park Zone</h3>
+                <div style="margin-top: 15px;">
+                    <p class="ja"><strong>政策提案：完全保全と商業凍結</strong><br>歴史的景観の完全保全を目的とし、城址公園周辺500m圏内での新規商業施設・ホテルの建設を原則凍結します。史跡の厳かな雰囲気を次世代へ受け継ぎます。</p>
+                    <p class="en"><strong>Policy: Complete Preservation & Commercial Freeze</strong><br>Aimed at total preservation of historic landscapes. A blanket freeze on new commercial facilities and hotels within a 500m radius of the castle park to pass the solemn atmosphere to the next generation.</p>
+                </div>
+            `,
+            kenrokuen: `
+                <h3 class="serif ja">兼六園 特別名勝防衛区</h3>
+                <h3 class="serif en">Kenrokuen Heritage Defense Zone</h3>
+                <div style="margin-top: 15px;">
+                    <p class="ja"><strong>政策提案：オーバーツーリズム規制</strong><br>観光客数の総量規制（入園者数の上限設定）を導入。混雑状況に応じた入場料の弾力化（ダイナミック・プライシング）により、庭園の環境負荷を劇的に低減します。</p>
+                    <p class="en"><strong>Policy: Overtourism Regulation</strong><br>Implementation of a hard cap on total tourist admissions. Introducing dynamic pricing for admission based on crowd levels to drastically reduce the environmental burden on the garden.</p>
+                </div>
+            `,
+            oyama: `
+                <h3 class="serif ja">尾山神社 景観修復区</h3>
+                <h3 class="serif en">Oyama Jinja Restoration District</h3>
+                <div style="margin-top: 15px;">
+                    <p class="ja"><strong>政策提案：伝統建築支援と景観法強化</strong><br>神門周辺の高さ制限を現行よりさらに厳格化。一方で、周辺の古い町家や伝統的建造物を修復・維持するための市独自の特別補助金ファンドを創設します。</p>
+                    <p class="en"><strong>Policy: Traditional Architecture Support</strong><br>Stricter height limitations around the shrine gates. Simultaneously establishing a special municipal grant fund to repair and maintain old machiya and traditional buildings in the vicinity.</p>
+                </div>
+            `,
+            civic: `
+                <h3 class="serif ja">21世紀美術館・市役所 経済特区</h3>
+                <h3 class="serif en">21st Century Museum / Civic Economic Zone</h3>
+                <div style="margin-top: 15px;">
+                    <p class="ja"><strong>政策提案：和モダン・デザイン税制</strong><br>近代的な開発を許可する経済の中心地と位置づけつつも、外観に金沢の伝統的意匠（木格子、瓦屋根のモチーフなど）を組み込んだ施設に対して大幅な税制優遇を与えます。</p>
+                    <p class="en"><strong>Policy: Wa-Modern Design Taxation</strong><br>Designated as a hub for modern development, but granting massive tax incentives to new facilities that incorporate traditional Kanazawa design elements (wooden lattices, tiled roof motifs) into their exterior facades.</p>
+                </div>
+            `
+        };
+
+        function openMapModal(zoneId) {
+            const modal = document.getElementById('zoning-modal');
+            document.getElementById('modal-body').innerHTML = zoningData[zoneId];
+            modal.classList.add('active');
+        }
+
+        function closeMapModal(event) {
+            // Close if clicked on the dark overlay specifically
+            if(event.target.classList.contains('modal-overlay')) {
+                document.getElementById('zoning-modal').classList.remove('active');
+            }
+        }
+
+        function forceCloseMapModal() {
+            document.getElementById('zoning-modal').classList.remove('active');
+        }
+
+        // Minigame Logic
+        let stats = { c: 50, e: 50, a: 50 };
+        let currentNode = 't1';
+
+        const gameNodes = {
+            t1: {
+                text: {
+                    ja: "【第1章：国土交通省のインフラ交付金】<br>観光渋滞を緩和するため、国交省から大規模な幹線道路建設の交付金が提示されました。しかし、ルート上には歴史的な武家屋敷群が含まれており、立ち退きと取り壊しが必要です。",
+                    en: "[Chapter 1: The MLIT Infrastructure Grant]<br>To alleviate tourist traffic, the Ministry of Land (MLIT) offers a massive grant for a new arterial road. However, the proposed route cuts straight through a historic samurai residential district, requiring demolitions."
+                },
+                choices: [
+                    { text: { ja: "交付金を拒否し、歴史地区を歩行者専用にする", en: "Reject the grant and pedestrianize the historic district" }, effect: {c: 15, e: -10, a: 5}, next: 't2' },
+                    { text: { ja: "交付金を受け入れ、道路を建設する", en: "Accept the grant and build the modern road" }, effect: {c: -20, e: 20, a: -5}, next: 't2' },
+                    { text: { ja: "莫大な市費を追加し、景観を守る地下トンネルを掘る", en: "Spend heavily from city funds to build a landscape-friendly bypass tunnel" }, effect: {c: 5, e: 5, a: -15}, next: 't2' }
+                ]
+            },
+            t2: {
+                text: {
+                    ja: "【第2章：加賀友禅の危機】<br>後継者不足に悩む伝統的な加賀友禅（絹染め）の工房群に対し、海外の巨大ラグジュアリー企業が買収を提案しました。彼らは世界展開を約束する一方、機械による大量生産を要求しています。",
+                    en: "[Chapter 2: The Kaga Yuzen Crisis]<br>Struggling with a lack of successors, traditional Kaga Yuzen silk dyeing workshops face a buyout offer from a foreign luxury conglomerate. They promise global reach but demand automated mass production."
+                },
+                choices: [
+                    { text: { ja: "外資の買収を法的に阻止し、市が職人に特別助成金を出す", en: "Block the buyout legally and provide municipal subsidies to artisans" }, effect: {c: 20, e: -15, a: 5}, next: 't3' },
+                    { text: { ja: "買収を許可し、莫大な法人税収で市の財政を潤す", en: "Allow the buyout and enrich the city with corporate tax revenue" }, effect: {c: -15, e: 20, a: -5}, next: 't3' },
+                    { text: { ja: "地元企業に出資を呼びかけ、市民協同組合を設立する", en: "Call on local businesses to invest and form a citizen cooperative" }, effect: {c: 10, e: 5, a: 10}, next: 't3' }
+                ]
+            },
+            t3: {
+                text: {
+                    ja: "【第3章：景観条例（高さ制限）の緩和】<br>金沢駅周辺の開発業者たちが、高級タワーホテル建設のために厳格な「景観条例（建物の高さ・デザイン制限）」の撤廃を激しくロビー活動しています。",
+                    en: "[Chapter 3: The Keikan Ordinance (Zoning)]<br>Real estate developers near Kanazawa Station are aggressively lobbying to abolish the strict Keikan Ordinance (building height and design limits) to construct luxury high-rise hotels."
+                },
+                choices: [
+                    { text: { ja: "断固として条例を維持し、低層の伝統的景観を守る", en: "Firmly maintain the ordinance to protect the low-rise traditional skyline" }, effect: {c: 15, e: -15, a: 0}, next: 't4' },
+                    { text: { ja: "経済成長のため条例を全面撤廃し、タワー建設を許可する", en: "Abolish the ordinance for economic growth and allow high-rises" }, effect: {c: -25, e: 25, a: 5}, next: 't4' },
+                    { text: { ja: "高さ制限は緩和するが、外観を和風にする「デザイン税」を課す", en: "Relax height limits but impose a 'Design Tax' mandating traditional facades" }, effect: {c: -5, e: 10, a: 5}, next: 't4' }
+                ]
+            },
+            t4: {
+                text: {
+                    ja: "【第4章：空き家（町家）問題】<br>旧市街地で伝統的な町家が次々と空き家（Akiya）になっています。東京のIT企業労働者たちが、これらを安く買い叩き、無機質なクリプト・ハブ（暗号資産拠点）に改装しようと押し寄せています。",
+                    en: "[Chapter 4: The Akiya Problem]<br>Traditional machiya (townhouses) in the old city are becoming abandoned (Akiya). Tokyo tech workers are flocking to buy them cheap and convert them into sterile crypto-hubs."
+                },
+                choices: [
+                    { text: { ja: "町家の売却先を地元住民や伝統産業に限定する条例を作る", en: "Pass a law restricting machiya sales to local residents and traditional trades" }, effect: {c: 20, e: -10, a: 10}, next: 't5' },
+                    { text: { ja: "IT労働者を歓迎し、移住補助金を出して人口増加を狙う", en: "Welcome the tech workers and provide relocation subsidies to boost population" }, effect: {c: -15, e: 15, a: -10}, next: 't5' },
+                    { text: { ja: "市が空き家を買い上げ、採算度外視で文化交流センターにする", en: "The city buys the homes to create unprofitable but rich cultural centers" }, effect: {c: 15, e: -15, a: -5}, next: 't5' }
+                ]
+            },
+            t5: {
+                text: {
+                    ja: "【第5章：派閥の決断（最終局面）】<br>市長選が近づいています。再選を果たすには強力な後ろ盾が必要です。徹底した保護を求める「保守文化派」と、規制緩和を求める「ビジネス改革派」のどちらと手を結びますか？",
+                    en: "[Chapter 5: Factional Alliances (Climax)]<br>The mayoral election approaches. You need strong backing to win re-election. Will you ally with the Conservative Heritage Faction, or the Business Reform Faction?"
+                },
+                choices: [
+                    { text: { ja: "保守文化派と同盟を結び、伝統死守を公約に掲げる", en: "Ally with the Heritage Faction, promising uncompromising cultural defense" }, effect: {c: 15, e: -10, a: 10}, next: 'ending' },
+                    { text: { ja: "ビジネス改革派と同盟を結び、大開発を約束する", en: "Ally with the Business Reform Faction, promising massive development" }, effect: {c: -10, e: 15, a: 10}, next: 'ending' },
+                    { text: { ja: "両派閥を拒絶し、完全無所属のポピュリストとして孤軍奮闘する", en: "Reject both factions and fight a lonely battle as an independent populist" }, effect: {c: 5, e: 5, a: -20}, next: 'ending' }
+                ]
+            },
+            ending: {
+                choices: [
+                    { text: { ja: "新たな任期を始める (再プレイ)", en: "Start a New Term (Play Again)" }, effect: {c: 0, e: 0, a: 0}, next: 'reset' }
+                ]
+            }
+        };
+
+        function makeChoice(choiceIndex) {
+            let nodeData = gameNodes[currentNode];
+            let choice = nodeData.choices[choiceIndex];
+            
+            stats.c += choice.effect.c;
+            stats.e += choice.effect.e;
+            stats.a += choice.effect.a;
+            
+            stats.c = Math.max(0, Math.min(100, stats.c));
+            stats.e = Math.max(0, Math.min(100, stats.e));
+            stats.a = Math.max(0, Math.min(100, stats.a));
+
+            if(choice.next === 'reset') {
+                stats = { c: 50, e: 50, a: 50 };
+                currentNode = 't1';
+            } else {
+                currentNode = choice.next;
+            }
+            
+            renderGameNode();
+        }
+
+        function renderGameNode() {
+            document.getElementById('stat-c').innerText = stats.c;
+            document.getElementById('stat-e').innerText = stats.e;
+            document.getElementById('stat-a').innerText = stats.a;
+
+            let textContainer = document.getElementById('game-text');
+            let choicesContainer = document.getElementById('game-choices');
+            let nodeData = gameNodes[currentNode];
+            
+            if (currentNode === 'ending') {
+                let outcomeJa = "結果: ";
+                let outcomeEn = "Outcome: ";
+                
+                if (stats.a < 30) {
+                    outcomeJa += "【政治的失脚】支持率が地に落ち、議会から不信任決議を受け辞職に追い込まれました。理想は高かったものの、市民の理解を得られず、あなたの政治生命は絶たれました。";
+                    outcomeEn += "[Political Ouster] Your approval rating plummeted. Facing a vote of no confidence, you were forced to resign. High ideals, but a total failure in governance.";
+                } else if (stats.c >= 65 && stats.e >= 65) {
+                    outcomeJa += "【黄金時代】伝統と革新の完璧な融合。金沢は世界的な文化都市としての威厳を保ちつつ、新しい経済の波に乗り、未曾有の繁栄を迎えました。歴史に名が刻まれるでしょう。";
+                    outcomeEn += "[Golden Age] A perfect synthesis of tradition and innovation. Kanazawa retained its dignity as a global cultural capital while riding a new economic wave to unprecedented prosperity.";
+                } else if (stats.c > stats.e + 15) {
+                    outcomeJa += "【文化の勝利】金沢は比類なき歴史都市として純粋な姿を保ちました。経済成長は停滞し不満の声もありますが、後世の歴史家はあなたの強硬な保護政策を大いに称賛するでしょう。";
+                    outcomeEn += "[Cultural Victory] Kanazawa remained pure as an unparalleled historic city. Economic growth stagnated, but future historians will deeply praise your uncompromising protectionist policies.";
+                } else if (stats.e > stats.c + 15) {
+                    outcomeJa += "【経済の奴隷】金沢は高層ビルと外資系資本が立ち並ぶ近代都市へと変貌しました。税収は潤沢ですが、かつての風情は失われ、単なる「よくある地方の大都市」に成り下がりました。";
+                    outcomeEn += "[Economic Sellout] Kanazawa transformed into a modern metropolis of high-rises and foreign capital. Tax revenue is abundant, but the historic charm is lost forever.";
+                } else {
+                    outcomeJa += "【妥協の街】ある程度の保存と開発を両立させましたが、中途半端な政策により、街のアイデンティティは曖昧なままです。あなたの任期は「可もなく不可もなく」と記憶されるでしょう。";
+                    outcomeEn += "[City of Compromise] You balanced preservation and development, but half-measures left the city's identity ambiguous. Your term will be remembered as simply mediocre.";
+                }
+                textContainer.innerHTML = currentLang === 'ja' ? outcomeJa : outcomeEn;
+            } else {
+                textContainer.innerHTML = nodeData.text[currentLang];
+            }
+
+            choicesContainer.innerHTML = "";
+            nodeData.choices.forEach((choice, index) => {
+                let btn = document.createElement('button');
+                btn.className = 'game-btn';
+                btn.innerText = choice.text[currentLang];
+                btn.onclick = () => makeChoice(index);
+                choicesContainer.appendChild(btn);
+            });
+        }
+
+        window.onload = () => { 
+            renderGameNode();
+        }
+    </script>
+</body>
+</html>
